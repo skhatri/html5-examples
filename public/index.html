@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap-responsive.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <title>Web Development Content</title>
+</head>
+<body>
+<section class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <nav class="nav">
+                <ul class="nav nav-list">
+                    <li class=""><a href="#">Overview</a></li>
+                    <li class="active"><a href="#week1">Week 1</a></li>
+                    <li class=""><a href="#week2">Week 2</a></li>
+                    <li class=""><a href="#week3">Week 3</a></li>
+                    <li class=""><a href="#week4">Week 4</a></li>
+                    <li class=""><a href="#week5">Week 5</a></li>
+                    <li class=""><a href="#week6">Week 6</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="span9">
+
+            <section id="week1">
+                <h1>Week 1</h1>
+                <span>HTML5 and CSS3 and Responsive Design</span>
+
+                <div>
+                    <!-- Look for section structure here -->
+                    <div class="subtitle">canvas</div>
+                    <section class="canvas-example">
+                        <header>Canvas - to draw</header>
+                        <article>
+                            <details open>
+                                <summary>Canvas Example</summary>
+                                <canvas id="week1Canvas" width="300" height="300">
+                                </canvas>
+                                <button class="btn btn-info" id="downloadweek1">Download</button>
+                            </details>
+                        </article>
+                        <aside>
+                            Canvas requires javascript to manipulate dynamic drawing and what you
+                            draw can be exported to images.
+                        </aside>
+                        <footer>
+                        </footer>
+                        <script src="scripts/week1.js"></script>
+                    </section>
+                </div>
+                <div>
+                    <div class="subtitle">media</div>
+                    <details>
+                        <summary>Audio Example</summary>
+                        <audio controls>
+                            <source src="media/countonme.mp3" type="audio/mpeg">
+                            No Audio support.
+                        </audio>
+                    </details>
+                    <details>
+                        <summary>Video</summary>
+                        <video width="320" height="240" controls>
+                            <source src="media/picking.mp4" type="video/mp4">
+                            No video support.
+                        </video>
+                    </details>
+                </div>
+                <div>
+                    <span class="label-success">form</span> - datalist
+                </div>
+                <div>
+                    <span class="label-success">structure</span>
+                    article, aside, details, summary, figure, figcaption, footer,
+                    header, nav, progress, section
+                    <progress value="10" max="100"></progress>
+
+                </div>
+                <div><span class="label-warning">deprecated</span>
+                    acronym, applet, basefont, big, center, dir, font, frame, frameset, noframes, strike, tt
+                </div>
+
+                <div>
+
+                    HTML5 - intents, workers, storage, location, offline.
+                    <div><span class="label-important">Use cases:</span></div>
+                    <div>intents -> embed tweets</div>
+                    <div>workers -> calculate via postMessage</div>
+                    <div>storage -> store value sessionStorage, localStorage</div>
+                    <div>location -> find where you are</div>
+
+                    <section class="locationservice">
+                        <div class="subtitle">
+                            location service
+                        </div>
+                        <article>
+                            Your Location: <div id="location"></div>
+                            <script type="text/javascript">
+                                var nearSearch = function () {
+                                    navigator.geolocation.getCurrentPosition(function (geo) {
+                                        console.log(geo);
+                                        var loc = {lng: geo.coords.longitude, lat: geo.coords.latitude};
+                                        var place = loc.lat + "," + loc.lng;
+                                        var mapUrl = "https://maps.google.com/maps?q="+place+"&um=1&ie=UTF-8&sa=N&tab=wl";
+                                        document.getElementById("location").innerHTML = "<a href='"+mapUrl+"' target='new'>"+place+"</a>";
+                                    }, function (error) {
+                                        console.log(error.message);
+                                    });
+                                };
+                                window.addEventListener('load', nearSearch);
+                            </script>
+                        </article>
+                    </section>
+                    <section class="webworkers">
+                        <div class="subtitle">
+                            webworkers
+                        </div>
+                        <article>
+                            Web workers
+                            <span>New Prime: <div id="primeOutput" class="label-success output">Calculating Prime...</div></span>
+                            <script type="text/javascript">
+                                function doCalc() {
+                                    //this line will create a new web worker in a worker thread
+                                    var worker = new Worker('scripts/prime_worker.js');
+                                    //the message should be the current value of the localStorage or 2 if no value exists.
+                                    var lastPrime;
+                                    //TODO write code here to read the last value by key "prime" from localStorage and assign to lastPrime.
+                                    lastPrime = localStorage.getItem("prime");
+
+                                    //this is a fallback mechanism to ensure the lastPrime value is 2 to start with if
+                                    //localStorage is empty.
+                                    if (lastPrime===undefined || lastPrime === null) {
+                                        lastPrime = String(2);
+                                    }
+                                    //we are passing a message to the worker thread here.
+                                    worker.postMessage(lastPrime);
+                                    //we are adding event handler function to handle onmessage event.
+                                    //this event is raised when worker submits the response via
+                                    //postMessage call.
+                                    //When we receive the result, the result is rendered as HTML into primeOutput element.
+                                    worker.onmessage = function (result) {
+                                        var newPrime = result.data;
+                                        document.getElementById("primeOutput").innerHTML = newPrime;
+                                        //TODO save the newPrime into localStorage with the key "prime",
+                                        //so when the page is loaded next time, a new prime number is shown
+                                        localStorage.setItem("prime", newPrime);
+                                    };
+                                }
+                                window.addEventListener('load', doCalc);
+                            </script>
+
+                        </article>
+                    </section>
+                    <section class="storage">
+                        <div class="subtitle">
+                            storage
+                        </div>
+                        <article>
+                            Local and Session Storage
+                            <pre>
+
+                            for (var i=0; i<localStorage.length; i+=1) {
+                                var key = localStorage.key(i);
+                                console.log(key + " has value of " + localStorage.getItem(key));
+                            }
+                            </pre>
+                        </article>
+                    </section>
+                    <section class="intents">
+                        <div class="subtitle">
+                            intents
+                        </div>
+                        <article>
+                            Intents
+                            <!--
+                            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+                            <p><a href="https://twitter.com/intent/tweet?in_reply_to=332405608642912256">Reply to Ferdinand</a></p>
+                            -->
+                            Example:
+                            https://dev.twitter.com/docs/intents
+                        </article>
+                    </section>
+                </div>
+                <footer>
+                    Week 1
+                </footer>
+            </section>
+
+            <section id="others">
+                <hgroup>
+                    <h1>Week 1</h1>
+                    <span>HTML5 and CSS3 and Responsive Design</span>
+
+                    <h1>Week 2</h1>
+                    Javascript - Functions
+                    canvas animation
+                    <div>offline -> prepare for when the browser is offline</div>
+                    <h1>Week 3</h1>
+                    More Javascript - Closures, Modules, Prototypes (if you do the course from codecademy it will really
+                    help
+                    with
+                    these 2 weeks of JS and will be able to put more time towards Node,Angular and Phonegap).
+                    <h1>Week 4</h1>
+                    NodeJS - build one application API REST/JSON
+                    <h1>Week 5</h1>
+                    Angular JS - framework to create client side App
+                    <h1>Week 6</h1>
+                    Converting App to phonegap.
+                </hgroup>
+            </section>
+
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

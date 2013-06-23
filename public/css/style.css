@@ -1,0 +1,39 @@
+#week1 {
+    display: block;
+}
+
+#others {
+    display: none;
+}
+
+#overview {
+    display: none;
+}
+
+aside {
+    background: #ffefff;
+    color: #456;
+}
+
+.subtitle {
+    font: 2.0em "trebuchet ms" normal;
+    background: #6a90df;
+    color: #fff;
+}
+
+summary {
+    background-color: #9ac0ff;
+}
+
+section h1 {
+    font-family: "trebuchet ms";
+    text-shadow: 4px 4px 2px #ccc;
+}
+
+canvas {
+    border:1px solid #dde;
+}
+
+.output {
+    font: 2.0em "Helvetica" normal;
+}
